@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as fd
 from midi_convert import convert_midi
-from tkinter import messagebox
 import mido
 
 

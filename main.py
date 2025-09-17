@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as fd
+from midi_convert import convert_midi
+from tkinter import messagebox
 import mido
 
 
@@ -10,16 +12,11 @@ root.title("DrumChart")
 root.minsize(700, 700)
 root.maxsize(900, 900)
 root.geometry("700x700")
+root.grid_columnconfigure(1, weight=3)
+root.attributes('-topmost', True)
+root.focus_force()
 
-root.columnconfigure(0, weight=1)
 path_var = tk.StringVar(value="No file selected")
-top_bar = ttk.Frame(root, padding=(10, 10))
-top_bar.grid(row=0, column=0, sticky="ew")
-top_bar.columnconfigure(1, weight=1)
-
-bottom_bar = ttk.Frame(root, padding=(10, 10))
-bottom_bar.grid(row=1, column = 1, sticky="sw")
-bottom_bar.columnconfigure(1, weight=1)
 
 def select_midi():
     filetypes = (
@@ -35,24 +32,28 @@ def select_midi():
     if filename:
         path_var.set(filename)
 
-def convert_midi(file_path):
-    midi_file = mido.MidiFile(file_path, clip=True)
-
 open_button = ttk.Button(
-    top_bar,
+    root,
     text="Select MIDI File",
     command=select_midi
 )
-open_button.grid(row=0, column=0, padx=(0, 10), sticky="w")
+open_button.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
-path_entry = ttk.Entry(top_bar, textvariable=path_var, state="readonly")
-path_entry.grid(row=0, column=1, sticky="ew")
+path_entry = ttk.Entry(
+    root,
+    textvariable=path_var, state="readonly"
+    )
+path_entry.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
 start_button = ttk.Button(
-    bottom_bar,
+    root,
     text="Start!!!",
     command=lambda: convert_midi(path_var.get())
 )
-start_button.grid(row=1, column=1, sticky="sw")
+start_button.grid(row=1, column=1, padx=10, pady=10, sticky="se")
+
+root.lift()
+root.attributes('-topmost', True)
+root.attributes('-topmost', False)
 
 root.mainloop()
